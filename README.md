@@ -14,6 +14,8 @@ composer require wilkques/line-login-sdk-php
 
     $line = new LINE('<CHANNEL_ID>', '<CHANNEL_SECRET>');
     // or
+    $line = new LINE('<CHANNEL_ID>');
+    // or
     $line = LINE::clientId('<CHANNEL_ID>');
 
     $code = $_GET['code'] ?? null;
@@ -52,6 +54,8 @@ composer require wilkques/line-login-sdk-php
         use Wilkques\PKCE\Generator;
 
         $line = new LINE('<CHANNEL_ID>', '<CHANNEL_SECRET>');
+        // or
+        $line = new LINE('<CHANNEL_ID>');
         // or
         $line = LINE::clientId('<CHANNEL_ID>');
 
