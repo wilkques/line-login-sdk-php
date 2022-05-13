@@ -14,12 +14,12 @@ composer require wilkques/line-login-sdk-php
 
     $line = new LINE('<CHANNEL_ID>', '<CHANNEL_SECRET>');
     // or
-    $line = LINE::clientId('<CHANNEL_ID>')->clientSecret('<CHANNEL_SECRET>');
+    $line = LINE::clientId('<CHANNEL_ID>');
 
     $code = $_GET['code'] ?? null;
 
     if ($code) {
-        $token = $line->token($code, '<REDIRECT_URI>');
+        $token = $line->clientSecret('<CHANNEL_SECRET>')->token($code, '<REDIRECT_URI>');
 
         $userProfile = $token->userProfile();
 
@@ -53,7 +53,7 @@ composer require wilkques/line-login-sdk-php
 
         $line = new LINE('<CHANNEL_ID>', '<CHANNEL_SECRET>');
         // or
-        $line = LINE::clientId('<CHANNEL_ID>')->clientSecret('<CHANNEL_SECRET>');
+        $line = LINE::clientId('<CHANNEL_ID>');
 
         $pkce = Generator::generate();
 
@@ -64,7 +64,7 @@ composer require wilkques/line-login-sdk-php
         $code = $_GET['code'] ?? null;
 
         if ($code) {
-            $token = $line->token($code, '<REDIRECT_URI>', $codeVerifier);
+            $token = $line->clientSecret('<CHANNEL_SECRET>')->token($code, '<REDIRECT_URI>', $codeVerifier);
 
             $userProfile = $token->userProfile();
 
