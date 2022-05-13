@@ -61,6 +61,8 @@ composer require wilkques/line-login-sdk-php
 
         $codeChallenge = $pkce->getCodeChallenge();
 
+        $code = $_GET['code'] ?? null;
+
         if ($code) {
             $token = $line->token($code, '<REDIRECT_URI>', $codeVerifier);
 
