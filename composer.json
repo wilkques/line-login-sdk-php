@@ -1,0 +1,25 @@
+{
+    "name": "wilkques/line-login-sdk-php",
+    "description": "LINE Login SDK for PHP",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.0",
+        "ext-json": "*",
+        "ext-curl":"*",
+        "wilkques/http-client": "^1.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wilkques\\LINE\\": "src"
+        }
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        }
+    },
+    "suggest": {
+        "wilkques/pkce": "Required to use the PKCE with OAuth2.0"
+    }
+}
