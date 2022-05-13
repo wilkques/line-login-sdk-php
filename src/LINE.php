@@ -115,26 +115,42 @@ class LINE
     }
 
     /**
+     * @param string|array|null $redirectUri
+     * @param array $scope
+     * @param string|null $state
      * @param array $args
      * 
      * @return string
      * 
-     * @see [Issue access token](https://developers.line.biz/en/reference/line-login/#issue-access-token)
+     * @see [Link a LINE Official Account with your channel](https://developers.line.biz/en/docs/line-login/link-a-bot/#displaying-the-option-to-add-your-line-official-account-as-a-friend)
      */
-    public function generateLoginUrl(array $args = [])
-    {
+    public function generateLoginUrl(
+        $redirectUri = null,
+        array $scope = ['openid', 'profile'],
+        string $state = null,
+        array $args = []
+    ) {
+        is_array($redirectUri) && [
+            'redirectUri'   => $redirectUri,
+            'scope'         => $scope,
+            'state'         => $state,
+        ] = $redirectUri;
+
         $params = [
             'response_type' => 'code',
             'client_id' => $this->checkClientId()->getClientId(),
-            'redirect_uri' => $this->getCurrentUrl(),
-            'scope' => 'openid profile',
-            'state' => 'default',
+            'redirect_uri' => $redirectUri ?: $this->getCurrentUrl(),
+            'scope' => implode(' ', $scope ?: ['openid', 'profile']),
+            'state' => $state ?: 'default',
         ];
 
         return UrlEnum::AUTH_URL . '?' . http_build_query(array_merge($params, $args), '', '&', PHP_QUERY_RFC3986);
     }
 
     /**
+     * @param string|array|null $redirectUri
+     * @param array $scope
+     * @param string|null $state
      * @param string|null $codeChallenge
      * @param array $args
      * 
@@ -142,14 +158,25 @@ class LINE
      * 
      * @see [PKCE support for LINE Login](https://developers.line.biz/en/docs/line-login/integrate-pkce/#how-to-integrate-pkce)
      */
-    public function generatePKCELoginUrl(string $codeChallenge = null, array $args = [])
-    {
+    public function generatePKCELoginUrl(
+        $redirectUri = null,
+        array $scope = ['openid', 'profile'],
+        string $state = null,
+        string $codeChallenge = null,
+        array $args = []
+    ) {
+        is_array($redirectUri) && [
+            'redirectUri'   => $redirectUri,
+            'scope'         => $scope,
+            'state'         => $state,
+        ] = $redirectUri;
+
         $params = [
             'code_challenge_method' => 'S256',
             'code_challenge' => $codeChallenge
         ];
 
-        return $this->generateLoginUrl(array_merge($params, $args));
+        return $this->generateLoginUrl($redirectUri, $scope, $state, array_merge($params, $args));
     }
 
     /**

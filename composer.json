@@ -20,6 +20,6 @@
         }
     },
     "suggest": {
-        "wilkques/pkce": "Required to use the PKCE with OAuth2.0"
+        "wilkques/pkce-php": "Required to use the PKCE with OAuth2.0"
     }
 }

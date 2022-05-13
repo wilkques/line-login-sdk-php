@@ -10,15 +10,39 @@ composer require wilkques/line-login-sdk-php
 ## How to use
 1. Authorization
     ````php
-    use Wilkques\Line\Login;
+    use Wilkques\Line\LINE;
 
     $line = new LINE('<CHANNEL_ID>', '<CHANNEL_SECRET>');
     // or
     $line = LINE::clientId('<CHANNEL_ID>')->clientSecret('<CHANNEL_SECRET>');
 
-    $url = $line->generateLoginUrl();
+    $code = $_GET['code'] ?? null;
 
-    $token = $line->token('<CODE>', '<REDIRECT_URI>');
+    if ($code) {
+        $token = $line->token($code, '<REDIRECT_URI>');
+
+        $userProfile = $token->userProfile();
+
+        exit;
+    }
+
+    $url = $line->generateLoginUrl([
+        // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login
+        'redirect_uri'  => 'https://yourdomain.com',
+        // Permissions requested from the user: https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes
+        'scope'         => 'profile openid email',
+    ]);
+
+    // or
+
+    $url = $line->generateLoginUrl(
+        // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login
+        'https://yourdomain.com',
+        // Permissions requested from the user: https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes
+        [
+            'profile', 'openid', 'email'
+        ]
+    );
     ````
 
 1. PKCE Authorization
@@ -37,9 +61,37 @@ composer require wilkques/line-login-sdk-php
 
         $codeChallenge = $pkce->getCodeChallenge();
 
-        $url = $line->generatePKCELoginUrl($codeChallenge);
+        if ($code) {
+            $token = $line->token($code, '<REDIRECT_URI>', $codeVerifier);
 
-        $token = $line->token('<CODE>', '<REDIRECT_URI>', $codeVerifier);
+            $userProfile = $token->userProfile();
+
+            exit;
+        }
+
+        $url = $line->generatePKCELoginUrl([
+            // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login
+            'redirect_uri' => 'https://yourdomain.com',
+            // Permissions requested from the user: https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes
+            'scope' => [
+                'profile', 'openid', 'email'
+            ], 
+            'state' => 'default', 
+            'code_challenge' => $codeChallenge,
+        ]);
+
+        // or
+
+        $url = $line->generatePKCELoginUrl(
+            // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login
+            'https://yourdomain.com',
+            // Permissions requested from the user: https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes
+            [
+                'profile', 'openid', 'email'
+            ], 
+            'default', 
+            $codeChallenge
+        );
         ```
 
 ## REFERENCE
