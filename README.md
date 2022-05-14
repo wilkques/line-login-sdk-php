@@ -58,10 +58,10 @@ composer require wilkques/line-login-sdk-php
         $pkce = Generator::generate();
 
         $code = $_GET['code'] ?? null;
-        
-        $codeVerifier = $_GET['state'] ?? null;
 
         if ($code) {
+            $codeVerifier = $_GET['state'] ?? null;
+        
             $token = $line->clientSecret('<CHANNEL_SECRET>')->token($code, '<REDIRECT_URI>', $codeVerifier);
 
             $userProfile = $token->userProfile();
