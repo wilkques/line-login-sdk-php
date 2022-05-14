@@ -131,7 +131,7 @@ class LINE
         array $args = []
     ) {
         is_array($redirectUri) && [
-            'redirectUri'   => $redirectUri,
+            'redirect_uri'  => $redirectUri,
             'scope'         => $scope,
             'state'         => $state,
         ] = $redirectUri;
@@ -166,7 +166,7 @@ class LINE
         array $args = []
     ) {
         is_array($redirectUri) && [
-            'redirectUri'   => $redirectUri,
+            'redirect_uri'  => $redirectUri,
             'scope'         => $scope,
             'state'         => $state,
         ] = $redirectUri;
