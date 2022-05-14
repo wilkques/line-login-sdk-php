@@ -57,11 +57,9 @@ composer require wilkques/line-login-sdk-php
 
         $pkce = Generator::generate();
 
-        $codeVerifier = $pkce->getCodeVerifier();
-
-        $codeChallenge = $pkce->getCodeChallenge();
-
         $code = $_GET['code'] ?? null;
+        
+        $codeVerifier = $_GET['state'] ?? null;
 
         if ($code) {
             $token = $line->clientSecret('<CHANNEL_SECRET>')->token($code, '<REDIRECT_URI>', $codeVerifier);
@@ -71,6 +69,10 @@ composer require wilkques/line-login-sdk-php
             exit;
         }
 
+        $codeVerifier = $pkce->getCodeVerifier();
+
+        $codeChallenge = $pkce->getCodeChallenge();
+
         $url = $line->generatePKCELoginUrl([
             // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login
             'redirect_uri' => 'https://yourdomain.com',
@@ -78,7 +80,7 @@ composer require wilkques/line-login-sdk-php
             'scope' => [
                 'profile', 'openid', 'email'
             ], 
-            'state' => 'default', 
+            'state' => $codeVerifier, 
             'code_challenge' => $codeChallenge,
         ]);
 
@@ -91,7 +93,7 @@ composer require wilkques/line-login-sdk-php
             [
                 'profile', 'openid', 'email'
             ], 
-            'default', 
+            $codeVerifier, 
             $codeChallenge
         );
         ```
