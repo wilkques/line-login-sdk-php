@@ -21,7 +21,7 @@ composer require wilkques/line-login-sdk-php
     if ($code) {
         $token = $line->clientSecret('<CHANNEL_SECRET>')->token($code, '<REDIRECT_URI>');
 
-        $userProfile = $token->userProfile();
+        $userProfile = $line->userProfile($token->accessToken());
 
         exit;
     }
@@ -64,7 +64,7 @@ composer require wilkques/line-login-sdk-php
         
             $token = $line->clientSecret('<CHANNEL_SECRET>')->token($code, '<REDIRECT_URI>', $codeVerifier);
 
-            $userProfile = $token->userProfile();
+            $userProfile = $line->userProfile($token->accessToken());
 
             exit;
         }
