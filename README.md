@@ -48,7 +48,7 @@ composer require wilkques/line-login-sdk-php
 1. PKCE Authorization
     1. command `composer require wilkques/pkce-php`
     1.  ```php
-        use Wilkques\Line\LINE;
+        use Wilkques\LINE\LINE;
         use Wilkques\PKCE\Generator;
 
         $line = new LINE('<CHANNEL_ID>');
