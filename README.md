@@ -26,15 +26,6 @@ composer require wilkques/line-login-sdk-php
         exit;
     }
 
-    $url = $line->generateLoginUrl([
-        // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login
-        'redirect_uri'  => 'https://yourdomain.com',
-        // Permissions requested from the user: https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes
-        'scope'         => 'profile openid email',
-    ]);
-
-    // or
-
     $url = $line->generateLoginUrl(
         // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login
         'https://yourdomain.com',
@@ -72,19 +63,6 @@ composer require wilkques/line-login-sdk-php
         $codeVerifier = $pkce->getCodeVerifier();
 
         $codeChallenge = $pkce->getCodeChallenge();
-
-        $url = $line->generatePKCELoginUrl([
-            // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login
-            'redirect_uri' => 'https://yourdomain.com',
-            // Permissions requested from the user: https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes
-            'scope' => [
-                'profile', 'openid', 'email'
-            ], 
-            'state' => $codeVerifier, 
-            'code_challenge' => $codeChallenge,
-        ]);
-
-        // or
 
         $url = $line->generatePKCELoginUrl(
             // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login

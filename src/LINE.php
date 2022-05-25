@@ -115,7 +115,7 @@ class LINE
     }
 
     /**
-     * @param string|array|null $redirectUri
+     * @param string|null $redirectUri
      * @param array $scope
      * @param string|null $state
      * @param array $args
@@ -125,17 +125,11 @@ class LINE
      * @see [Link a LINE Official Account with your channel](https://developers.line.biz/en/docs/line-login/link-a-bot/#displaying-the-option-to-add-your-line-official-account-as-a-friend)
      */
     public function generateLoginUrl(
-        $redirectUri = null,
+        string $redirectUri = null,
         array $scope = ['openid', 'profile'],
         string $state = null,
         array $args = []
     ) {
-        is_array($redirectUri) && [
-            'redirect_uri'  => $redirectUri,
-            'scope'         => $scope,
-            'state'         => $state,
-        ] = $redirectUri;
-
         $params = [
             'response_type' => 'code',
             'client_id' => $this->checkClientId()->getClientId(),
@@ -148,7 +142,7 @@ class LINE
     }
 
     /**
-     * @param string|array|null $redirectUri
+     * @param string|null $redirectUri
      * @param array $scope
      * @param string|null $state
      * @param string|null $codeChallenge
@@ -159,18 +153,12 @@ class LINE
      * @see [PKCE support for LINE Login](https://developers.line.biz/en/docs/line-login/integrate-pkce/#how-to-integrate-pkce)
      */
     public function generatePKCELoginUrl(
-        $redirectUri = null,
+        string $redirectUri = null,
         array $scope = ['openid', 'profile'],
         string $state = null,
         string $codeChallenge = null,
         array $args = []
     ) {
-        is_array($redirectUri) && [
-            'redirect_uri'  => $redirectUri,
-            'scope'         => $scope,
-            'state'         => $state,
-        ] = $redirectUri;
-
         $params = [
             'code_challenge_method' => 'S256',
             'code_challenge' => $codeChallenge
