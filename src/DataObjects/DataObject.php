@@ -58,7 +58,7 @@ abstract class DataObject implements \JsonSerializable, \ArrayAccess
      */
     public function getData()
     {
-        return $this->data ?: $this->setData();
+        return $this->data ?: $this->setData()->getData();
     }
 
     /**
