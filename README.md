@@ -10,7 +10,7 @@ composer require wilkques/line-login-sdk-php
 ## How to use
 1. Authorization
     ````php
-    use Wilkques\Line\LINE;
+    use Wilkques\LINE\LINE;
 
     $line = new LINE('<CHANNEL_ID>');
     // or
