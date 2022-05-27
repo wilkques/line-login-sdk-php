@@ -1,22 +1,22 @@
 <?php
 
-if (!function_exists('stringStudly')) {
+if (!function_exists('stringSnake')) {
     /**
-     * String snake to study
      * 
-     * @param string|array $string
-     * 
-     * @return string|array
      */
-    function stringStudly($string)
+    function stringSnake($camelCase)
     {
-        return preg_replace_callback('/([\_|\-](\w))/', function ($matches) {
-            return ucfirst($matches[2]);
-        }, $string);
+        return preg_replace_callback(
+            ["/([A-Z]+)/", "/_([A-Z]+)([A-Z][a-z])/"],
+            function ($matches) {
+                return "_" . lcfirst($matches[0]);
+            },
+            $camelCase
+        );
     }
 }
 
-if (!function_exists('arrayKeyStudly')) {
+if (!function_exists('arrayKeySnake')) {
     /**
      * String snake to study
      * 
@@ -24,8 +24,8 @@ if (!function_exists('arrayKeyStudly')) {
      * 
      * @return array
      */
-    function arrayKeyStudly($array)
+    function arrayKeySnake($array)
     {
-        return array_combine(stringStudly(array_keys($array)), $array);
+        return array_combine(stringSnake(array_keys($array)), $array);
     }
 }

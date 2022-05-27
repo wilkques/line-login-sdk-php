@@ -36,7 +36,7 @@ class LINE
     ];
     /** @var Client */
     protected $client;
-
+    /** @var array */
     const SCOPE = ['openid', 'profile', 'email'];
 
     /**
@@ -117,21 +117,6 @@ class LINE
     }
 
     /**
-     * @param array $args
-     * 
-     * @return array
-     */
-    protected function urlArgs(array $args)
-    {
-        return array_replace_recursive(
-            func_get_args(),
-            array_values(
-                arrayKeyStudly($args)
-            )
-        );
-    }
-
-    /**
      * @param string|array $scope
      * 
      * @throws \UnexpectedValueException
@@ -154,9 +139,9 @@ class LINE
     }
 
     /**
-     * @param string|array|null $redirectUri
+     * @param string|array $redirectUri
      * @param string|array $scope
-     * @param string|null $state
+     * @param string $state
      * @param array $args
      * 
      * @return string
@@ -164,30 +149,32 @@ class LINE
      * @see [Link a LINE Official Account with your channel](https://developers.line.biz/en/docs/line-login/link-a-bot/#displaying-the-option-to-add-your-line-official-account-as-a-friend)
      */
     public function generateLoginUrl(
-        $redirectUri = null,
+        $redirectUri,
         $scope = ['openid', 'profile'],
-        string $state = null,
+        string $state = 'default',
         array $args = []
     ) {
-        if (is_array($redirectUri)) {
-            return $this->generateLoginUrl(...$this->urlArgs($redirectUri));
-        }
+        $params = array_merge(
+            get_defined_vars(),
+            is_array($redirectUri) ? $redirectUri : compact('redirectUri'),
+            [
+                'response_type' => 'code',
+                'client_id' => $this->checkClientId()->getClientId(),
+            ],
+            $args
+        );
 
-        $params = [
-            'response_type' => 'code',
-            'client_id' => $this->checkClientId()->getClientId(),
-            'redirect_uri' => $redirectUri ?: $this->getCurrentUrl(),
-            'scope' => $this->scope($scope),
-            'state' => $state ?: 'default',
-        ];
+        unset($params['args']);
 
-        return UrlEnum::AUTH_URL . '?' . http_build_query(array_merge($params, $args), '', '&', PHP_QUERY_RFC3986);
+        $params['scope'] = $this->scope($params['scope']);
+
+        return UrlEnum::AUTH_URL . '?' . http_build_query(arrayKeySnake($params), '', '&', PHP_QUERY_RFC3986);
     }
 
     /**
-     * @param string|array|null $redirectUri
-     * @param array $scope
-     * @param string|null $state
+     * @param string|array $redirectUri
+     * @param string|array $scope
+     * @param string $state
      * @param string|null $codeChallenge
      * @param array $args
      * 
@@ -196,22 +183,17 @@ class LINE
      * @see [PKCE support for LINE Login](https://developers.line.biz/en/docs/line-login/integrate-pkce/#how-to-integrate-pkce)
      */
     public function generatePKCELoginUrl(
-        $redirectUri = null,
-        array $scope = ['openid', 'profile'],
-        string $state = null,
+        $redirectUri,
+        $scope = ['openid', 'profile'],
+        string $state = 'default',
         string $codeChallenge = null,
         array $args = []
     ) {
-        if (is_array($redirectUri)) {
-            return $this->generatePKCELoginUrl(...$this->urlArgs($redirectUri));
-        }
+        !is_array($redirectUri) && $redirectUri = get_defined_vars();
 
-        $params = [
+        return $this->generateLoginUrl(array_merge($redirectUri, [
             'code_challenge_method' => 'S256',
-            'code_challenge' => $codeChallenge
-        ];
-
-        return $this->generateLoginUrl($redirectUri, $scope, $state, array_merge($params, $args));
+        ], $args));
     }
 
     /**
