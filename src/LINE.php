@@ -145,14 +145,14 @@ class LINE
      */
     protected function urlParams(array $params)
     {
+        $options = array_shift($params);
+        
         $redirectUri = array_shift($params);
-
-        $args = array_pop($params);
 
         return array_merge(
             arrayKeySnake($params),
             is_array($redirectUri) ? $redirectUri : compact('redirectUri'),
-            $args
+            $options
         );
     }
 
@@ -160,7 +160,7 @@ class LINE
      * @param string|array $redirectUri
      * @param string|array $scope
      * @param string $state
-     * @param array $args
+     * @param array $options
      * 
      * @return string
      * 
@@ -170,16 +170,16 @@ class LINE
         $redirectUri,
         $scope = ['openid', 'profile'],
         string $state = 'default',
-        array $args = []
+        array $options = []
     ) {
         $vars = get_defined_vars();
 
-        $vars['args'] += [
+        $options = [
             'response_type' => 'code',
             'client_id' => $this->checkClientId()->getClientId(),
         ];
 
-        $params = $this->urlParams($vars);
+        $params = $this->urlParams(array_merge_recursive(compact('options'), $vars));
 
         $params['scope'] = $this->scope($params['scope']);
 
@@ -191,7 +191,7 @@ class LINE
      * @param string|array $scope
      * @param string $state
      * @param string|null $codeChallenge
-     * @param array $args
+     * @param array $options
      * 
      * @return string
      * 
@@ -202,16 +202,16 @@ class LINE
         $scope = ['openid', 'profile'],
         string $state = 'default',
         string $codeChallenge = null,
-        array $args = []
+        array $options = []
     ) {
         $vars = get_defined_vars();
 
-        $vars['args'] += [
+        $options = [
             'code_challenge_method' => 'S256',
         ];
 
         return $this->generateLoginUrl(
-            $this->urlParams($vars)
+            $this->urlParams(array_merge_recursive(compact('options'), $vars))
         );
     }
 
