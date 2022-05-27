@@ -8,7 +8,7 @@
 composer require wilkques/line-login-sdk-php
 ````
 ## [Scopes](#REFERENCE)
-Scope             	        |   用戶資訊     |     	  ID Token<br />(包括用戶 ID)  |     在 ID Token 中的<br />顯示名稱   |   ID Token 中的<br />個人資料圖片 URL   |   ID Token 中的<br />電子郵件地址| 
+Scope             	        |   Profile     |     	  ID Token<br />(including user ID)  |     Display name<br />in ID token   |   Profile image URL<br />in ID token   |   Email address<br />in ID token| 
 ----------------------------|:-------------:|:-----------------:|:-----------------:|:-------------------:|:-----------------:|
 profile	                    |       ✓	    |       -	        |         -	        |            -        |          -       |
 profile%20openid	        |       ✓	    |       ✓	        |        ✓	        |           ✓	      |          -       |
@@ -109,5 +109,5 @@ openid%20email	            |       -	    |       ✓	        |        -	        
 ## REFERENCE
 
 1. [Official](https://developers.line.biz/en/reference/line-login/)
-1. [LINE Login Official](https://developers.line.biz/zh-hant/docs/line-login/integrate-line-login/#making-an-authorization-request)
+1. [LINE Login Official](https://developers.line.biz/en/docs/line-login/integrate-line-login/#making-an-authorization-request)
 1. [PKCE support for LINE Login](https://developers.line.biz/en/docs/line-login/integrate-pkce/)
