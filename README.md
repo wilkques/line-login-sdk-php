@@ -7,7 +7,7 @@
 ````
 composer require wilkques/line-login-sdk-php
 ````
-## [Scopes](##REFERENCE)
+## [Scopes](#REFERENCE)
 Scope             	        |   用戶資訊     |     	  ID Token<br />(包括用戶 ID)  |     在 ID Token 中的<br />顯示名稱   |   ID Token 中的<br />個人資料圖片 URL   |   ID Token 中的<br />電子郵件地址| 
 ----------------------------|:-------------:|:-----------------:|:-----------------:|:-------------------:|:-----------------:|
 profile	                    |       ✓	    |       -	        |         -	        |            -        |          -       |
