@@ -154,8 +154,14 @@ class LINE
         string $state = 'default',
         array $args = []
     ) {
+        $vars = get_defined_vars();
+
+        $redirectUri = array_shift($vars);
+
+        $args = array_pop($vars);
+
         $params = array_merge(
-            get_defined_vars(),
+            $vars,
             is_array($redirectUri) ? $redirectUri : compact('redirectUri'),
             [
                 'response_type' => 'code',
@@ -163,8 +169,6 @@ class LINE
             ],
             $args
         );
-
-        unset($params['args']);
 
         $params['scope'] = $this->scope($params['scope']);
 
