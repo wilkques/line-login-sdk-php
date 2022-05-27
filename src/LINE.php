@@ -139,6 +139,24 @@ class LINE
     }
 
     /**
+     * @param array $params
+     * 
+     * @return array
+     */
+    protected function urlParams(array $params)
+    {
+        $redirectUri = array_shift($params);
+
+        $args = array_pop($params);
+
+        return array_merge(
+            arrayKeySnake($params),
+            is_array($redirectUri) ? $redirectUri : compact('redirectUri'),
+            $args
+        );
+    }
+
+    /**
      * @param string|array $redirectUri
      * @param string|array $scope
      * @param string $state
@@ -156,23 +174,16 @@ class LINE
     ) {
         $vars = get_defined_vars();
 
-        $redirectUri = array_shift($vars);
+        $vars['args'] += [
+            'response_type' => 'code',
+            'client_id' => $this->checkClientId()->getClientId(),
+        ];
 
-        $args = array_pop($vars);
-
-        $params = array_merge(
-            $vars,
-            is_array($redirectUri) ? $redirectUri : compact('redirectUri'),
-            [
-                'response_type' => 'code',
-                'client_id' => $this->checkClientId()->getClientId(),
-            ],
-            $args
-        );
+        $params = $this->urlParams($vars);
 
         $params['scope'] = $this->scope($params['scope']);
 
-        return UrlEnum::AUTH_URL . '?' . http_build_query(arrayKeySnake($params), '', '&', PHP_QUERY_RFC3986);
+        return UrlEnum::AUTH_URL . '?' . http_build_query($params, '', '&', PHP_QUERY_RFC3986);
     }
 
     /**
@@ -193,11 +204,15 @@ class LINE
         string $codeChallenge = null,
         array $args = []
     ) {
-        !is_array($redirectUri) && $redirectUri = get_defined_vars();
+        $vars = get_defined_vars();
 
-        return $this->generateLoginUrl(array_merge($redirectUri, [
+        $vars['args'] += [
             'code_challenge_method' => 'S256',
-        ], $args));
+        ];
+
+        return $this->generateLoginUrl(
+            $this->urlParams($vars)
+        );
     }
 
     /**
