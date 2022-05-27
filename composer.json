@@ -10,6 +10,9 @@
         "wilkques/http-client": "^1.0.0"
     },
     "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
         "psr-4": {
             "Wilkques\\LINE\\": "src"
         }

@@ -34,6 +34,24 @@ composer require wilkques/line-login-sdk-php
             'profile', 'openid', 'email'
         ]
     );
+
+    // or
+
+    $url = $line->generateLoginUrl([
+        // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login
+        'redirect_uri'  => $url,
+        // Permissions requested from the user: https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes
+        'scope'         => ['openid', 'openid']
+    ]);
+
+    // or
+
+    $url = $line->generateLoginUrl([
+        // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login
+        $url,
+        // Permissions requested from the user: https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes
+        ['openid', 'openid']
+    ]);
     ````
 
 1. PKCE Authorization
@@ -74,6 +92,28 @@ composer require wilkques/line-login-sdk-php
             $codeVerifier, 
             $codeChallenge
         );
+
+        // or
+
+        $url = $line->generatePKCELoginUrl([
+            // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login
+            'redirect_uri'      => $url,
+            // Permissions requested from the user: https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes
+            'scope'             => ['openid', 'openid'], 
+            'state'             => $codeVerifier, 
+            'code_challenge'    => $codeChallenge,
+        ]);
+
+        // or
+
+        $url = $line->generatePKCELoginUrl([
+            // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login
+            $url,
+            // Permissions requested from the user: https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes
+            ['openid', 'openid'], 
+            $codeVerifier, 
+            $codeChallenge,
+        ]);
         ```
 
 ## REFERENCE

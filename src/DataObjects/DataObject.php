@@ -18,7 +18,7 @@ abstract class DataObject implements \JsonSerializable, \ArrayAccess
     {
         is_array($response) && $this->setData($response);
 
-        $response instanceof Response && $this->setResponse($response);
+        $response instanceof Response && $this->setResponse($response)->setData();
     }
 
     /**
