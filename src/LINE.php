@@ -123,7 +123,7 @@ class LINE
      * 
      * @return string
      * 
-     * @see [LINE Scope](https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes)
+     * @see [LINE-Scope](https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes)
      */
     protected function scope($scope)
     {
@@ -146,7 +146,7 @@ class LINE
     protected function urlParams(array $params)
     {
         $options = array_shift($params);
-        
+
         $redirectUri = array_shift($params);
 
         return array_merge(
@@ -164,7 +164,7 @@ class LINE
      * 
      * @return string
      * 
-     * @see [Link a LINE Official Account with your channel](https://developers.line.biz/en/docs/line-login/link-a-bot/#displaying-the-option-to-add-your-line-official-account-as-a-friend)
+     * @see [Link-a-LINE-Official-Account-with-your-channel](https://developers.line.biz/en/docs/line-login/link-a-bot/#displaying-the-option-to-add-your-line-official-account-as-a-friend)
      */
     public function generateLoginUrl(
         $redirectUri,
@@ -195,7 +195,7 @@ class LINE
      * 
      * @return string
      * 
-     * @see [PKCE support for LINE Login](https://developers.line.biz/en/docs/line-login/integrate-pkce/#how-to-integrate-pkce)
+     * @see [PKCE-support-for-LINE-Login](https://developers.line.biz/en/docs/line-login/integrate-pkce/#how-to-integrate-pkce)
      */
     public function generatePKCELoginUrl(
         $redirectUri,
@@ -224,7 +224,7 @@ class LINE
      * 
      * @return Token
      * 
-     * @see [Issue access token](https://developers.line.biz/en/reference/line-login/#issue-access-token)
+     * @see [Issue-access-token](https://developers.line.biz/en/reference/line-login/#issue-access-token)
      */
     public function token(string $code, string $redirectUri = null, string $codeVerifier = null)
     {
@@ -255,7 +255,7 @@ class LINE
      * 
      * @return Response
      * 
-     * @see [Verify access token validity](https://developers.line.biz/en/reference/line-login/#verify-access-token)
+     * @see [Verify-access-token-validity](https://developers.line.biz/en/reference/line-login/#verify-access-token)
      */
     public function verifyToken(string $accessToken)
     {
@@ -274,7 +274,7 @@ class LINE
      * 
      * @return Token
      * 
-     * @see [Refresh access token](https://developers.line.biz/en/reference/line-login/#refresh-access-token)
+     * @see [Refresh-access-token](https://developers.line.biz/en/reference/line-login/#refresh-access-token)
      */
     public function refreshToken(string $refreshToken, bool $webApp = true)
     {
@@ -304,7 +304,7 @@ class LINE
      * 
      * @return Response
      * 
-     * @see [Revoke access token](https://developers.line.biz/en/reference/line-login/#revoke-access-token)
+     * @see [Revoke-access-token](https://developers.line.biz/en/reference/line-login/#revoke-access-token)
      */
     public function revokeToken(string $accessToken, bool $webApp = true)
     {
@@ -331,7 +331,7 @@ class LINE
      * 
      * @return IdToken
      * 
-     * @see [Verify ID token](https://developers.line.biz/en/reference/line-login/#verify-id-token)
+     * @see [Verify-ID-token](https://developers.line.biz/en/reference/line-login/#verify-id-token)
      */
     public function verifyIdToken(string $idToken, array $options = [])
     {
@@ -357,7 +357,7 @@ class LINE
      * 
      * @return UserProfile
      * 
-     * @see [Get user profile](https://developers.line.biz/en/reference/line-login/#profile)
+     * @see [Get-user-profile](https://developers.line.biz/en/reference/line-login/#profile)
      */
     public function userProfile(string $accessToken)
     {
@@ -375,7 +375,7 @@ class LINE
      * 
      * @return bool
      * 
-     * @see [Friendship status](https://developers.line.biz/en/reference/line-login/#get-friendship-status)
+     * @see [Friendship-status](https://developers.line.biz/en/reference/line-login/#get-friendship-status)
      */
     public function friendshipStatus(string $accessToken)
     {
