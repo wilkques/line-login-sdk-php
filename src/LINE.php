@@ -147,11 +147,15 @@ class LINE
     {
         $options = array_shift($params);
 
+        $vars = $params;
+
         $redirectUri = array_shift($params);
+
+        $vars = is_array($redirectUri) ? (arrayKeyIsNumeric($redirectUri) ? arrayCombine(array_keys($vars), $redirectUri) : $redirectUri) : compact('redirectUri');
 
         return array_merge(
             arrayKeySnake($params),
-            is_array($redirectUri) ? $redirectUri : compact('redirectUri'),
+            arrayKeySnake($vars),
             $options
         );
     }

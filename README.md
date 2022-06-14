@@ -49,6 +49,17 @@ openid%20email	            |       -	    |       ✓	        |        -	        
 
     $url = $line->generateLoginUrl([
         // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login
+        'https://yourdomain.com',
+        // Permissions requested from the user: https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes
+        [
+            'profile', 'openid', 'email'
+        ]
+    ]);
+
+    // or
+
+    $url = $line->generateLoginUrl([
+        // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login
         'redirect_uri'  => $url,
         // Permissions requested from the user: https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes
         'scope'         => ['openid', 'openid']
@@ -93,6 +104,19 @@ openid%20email	            |       -	    |       ✓	        |        -	        
             $codeVerifier, 
             $codeChallenge
         );
+
+        // or
+
+        $url = $line->generatePKCELoginUrl([
+            // Callback URL: https://developers.line.biz/console/channel/<channel id>/line-login
+            'https://yourdomain.com',
+            // Permissions requested from the user: https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes
+            [
+                'profile', 'openid', 'email'
+            ], 
+            $codeVerifier, 
+            $codeChallenge
+        ]);
 
         // or
 
