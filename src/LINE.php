@@ -21,6 +21,7 @@ use Wilkques\LINE\Enum\UrlEnum;
  * @method static static clientSecret() set client secret
  * @method \Wilkques\Http\Client asForm()
  * @method \Wilkques\Http\Client withToken(string $token, string $type = 'Bearer')
+ * @method \Wilkques\Http\Client withHeaders(array $headers)
  * @method \Wilkques\Http\Client post(string $url, array $data, array $query = null)
  * @method \Wilkques\Http\Response throw(callable $callable = null)
  */

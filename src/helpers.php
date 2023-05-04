@@ -48,7 +48,7 @@ if (!function_exists('arrayKeyIsNumeric')) {
             return true;
         }
 
-        return array_unique(array_map("is_int", array_keys($array))) === array(true);
+        return array_unique(array_map("is_numeric", array_keys($array))) === array(true);
     }
 }
 
