@@ -249,7 +249,8 @@ class LINE
                 $params
             )->throw(function (Response $response) {
                 return new TokenException($response);
-            })
+            }),
+            $this
         );
     }
 
@@ -297,7 +298,8 @@ class LINE
                 $params
             )->throw(function (Response $response) {
                 return new RefreshTokenException($response);
-            })
+            }),
+            $this
         );
     }
 
@@ -351,7 +353,8 @@ class LINE
                 $params + $options
             )->throw(function (Response $response) {
                 return new VerifyIdTokenException($response);
-            })
+            }),
+            $this
         );
     }
 
@@ -369,7 +372,8 @@ class LINE
         return new UserProfile(
             $this->withToken($accessToken)->get(UrlEnum::PROFILE_URL)->throw(function (Response $response) {
                 return new UserProfileException($response);
-            })
+            }),
+            $this
         );
     }
 

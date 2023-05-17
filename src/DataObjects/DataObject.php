@@ -3,22 +3,50 @@
 namespace Wilkques\LINE\DataObjects;
 
 use Wilkques\Http\Response;
+use Wilkques\LINE\LINE;
 
 abstract class DataObject implements \JsonSerializable, \ArrayAccess
 {
     /** @var array */
     protected $data = [];
+
     /** @var Response */
     protected $response;
+
+    /** @var LINE */
+    protected $line;
 
     /**
      * @param Response|array $response
      */
-    public function __construct($response)
+    public function __construct($response, LINE $line = null)
     {
         is_array($response) && $this->setData($response);
 
         $response instanceof Response && $this->setResponse($response)->setData();
+
+        $line && $this->setLine($line);
+    }
+
+
+    /**
+     * @param LINE $line
+     * 
+     * @return static
+     */
+    public function setLine(LINE $line)
+    {
+        $this->line = $line;
+
+        return $this;
+    }
+
+    /**
+     * @return LINE
+     */
+    public function getLine()
+    {
+        return $this->line;
     }
 
     /**
@@ -196,7 +224,7 @@ abstract class DataObject implements \JsonSerializable, \ArrayAccess
      */
     public function __get(string $key)
     {
-        return $this->data[$key];
+        return $this->getDataByKey($key);
     }
 
     /**

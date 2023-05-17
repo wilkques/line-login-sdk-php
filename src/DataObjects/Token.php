@@ -51,12 +51,4 @@ class Token extends DataObject
     {
         return $this->getDataByKey('id_token');
     }
-
-    /**
-     * @return string|null
-     */
-    public function __get(string $key)
-    {
-        return $this->getDataByKey($key);
-    }
 }

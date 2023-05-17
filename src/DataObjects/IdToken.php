@@ -119,13 +119,21 @@ class IdToken extends DataObject
     /**
      * @return UserProfile
      */
-    public function userProfile()
+    public function userProfile(string $token = null)
     {
-        return new UserProfile([
+        if ($token) {
+            return $this->getLine()->userProfile($token);
+        }
+
+        $userProfile = new UserProfile([
             'userId' => $this->userId(),
             'displayName' => $this->displayName(),
             'pictureUrl' => $this->pictureUrl(),
             'email' => $this->email(),
-        ]);
+        ], $this->getLine());
+
+        $userProfile->setResponse($this->getResponse());
+
+        return $userProfile;
     }
 }
