@@ -155,8 +155,8 @@ class LINE
         $vars = is_array($redirectUri) ? (arrayKeyIsNumeric($redirectUri) ? arrayCombine(array_keys($vars), $redirectUri) : $redirectUri) : compact('redirectUri');
 
         return array_merge(
-            arrayKeySnake($params),
-            arrayKeySnake($vars),
+            array_key_sanke($params),
+            array_key_sanke($vars),
             $options
         );
     }
