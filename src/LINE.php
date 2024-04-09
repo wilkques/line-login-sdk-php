@@ -27,16 +27,17 @@ use Wilkques\LINE\Enum\UrlEnum;
  */
 class LINE
 {
-    /** @var string */
-    protected $clientId;
-    /** @var string */
-    protected $clientSecret;
     /** @var array */
-    protected $methods = [
+    protected $auth = [];
+
+    /** @var array */
+    const METHODS = [
         'clientId', 'clientSecret'
     ];
+
     /** @var Client */
     protected $client;
+
     /** @var array */
     const SCOPE = ['openid', 'profile', 'email'];
 
@@ -56,7 +57,7 @@ class LINE
      */
     public function setClientId(string $clientId = null)
     {
-        $this->clientId = $clientId;
+        data_set($this->auth, 'clientId', $clientId);
 
         return $this;
     }
@@ -66,7 +67,7 @@ class LINE
      */
     public function getClientId()
     {
-        return $this->clientId;
+        return data_get($this->auth, 'clientId');
     }
 
     /**
@@ -76,7 +77,7 @@ class LINE
      */
     public function setClientSecret(string $clientSecret = null)
     {
-        $this->clientSecret = $clientSecret;
+        data_set($this->auth, 'clientSecret', $clientSecret);
 
         return $this;
     }
@@ -86,7 +87,7 @@ class LINE
      */
     public function getClientSecret()
     {
-        return $this->clientSecret;
+        return data_get($this->auth, 'clientSecret');
     }
 
     /**
@@ -162,7 +163,7 @@ class LINE
     }
 
     /**
-     * @param string|array $redirectUri
+     * @param string|array|null $redirectUri
      * @param string|array $scope
      * @param string $state
      * @param array $options
@@ -172,7 +173,7 @@ class LINE
      * @see [Link-a-LINE-Official-Account-with-your-channel](https://developers.line.biz/en/docs/line-login/link-a-bot/#displaying-the-option-to-add-your-line-official-account-as-a-friend)
      */
     public function generateLoginUrl(
-        $redirectUri,
+        $redirectUri = null,
         $scope = ['openid', 'profile'],
         string $state = 'default',
         array $options = []
@@ -188,11 +189,13 @@ class LINE
 
         $params['scope'] = $this->scope($params['scope']);
 
+        $params['redirect_uri'] = $params['redirect_uri'] ? $params['redirect_uri'] : $this->getCurrentUrl();
+
         return UrlEnum::AUTH_URL . '?' . http_build_query($params, '', '&', PHP_QUERY_RFC3986);
     }
 
     /**
-     * @param string|array $redirectUri
+     * @param string|array|null $redirectUri
      * @param string|array $scope
      * @param string $state
      * @param string|null $codeChallenge
@@ -203,7 +206,7 @@ class LINE
      * @see [PKCE-support-for-LINE-Login](https://developers.line.biz/en/docs/line-login/integrate-pkce/#how-to-integrate-pkce)
      */
     public function generatePKCELoginUrl(
-        $redirectUri,
+        $redirectUri = null,
         $scope = ['openid', 'profile'],
         string $state = 'default',
         string $codeChallenge = null,
@@ -398,10 +401,11 @@ class LINE
      */
     private function getCurrentUrl()
     {
-        $http = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
-        $uri = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
 
-        return "$http://{$_SERVER['HTTP_HOST']}$uri";
+        $uri = data_get(parse_url($_SERVER['REQUEST_URI']), 'path');
+
+        return sprintf("%s://%s%s", $protocol, $_SERVER['HTTP_HOST'], $uri);
     }
 
     /**
@@ -442,7 +446,7 @@ class LINE
     {
         $method = ltrim(trim($method));
 
-        if (in_array($method, $this->methods)) {
+        if (in_array($method, static::METHODS)) {
             $method = 'set' . ucfirst($method);
 
             return $this->{$method}(...$arguments);
