@@ -2,6 +2,7 @@
 
 namespace Wilkques\LINE;
 
+use Wilkques\Helpers\Arrays;
 use Wilkques\Http\Client;
 use Wilkques\Http\Response;
 use Wilkques\LINE\DataObjects\IdToken;
@@ -23,7 +24,7 @@ use Wilkques\LINE\Enum\UrlEnum;
  * @method \Wilkques\Http\Client withToken(string $token, string $type = 'Bearer')
  * @method \Wilkques\Http\Client withHeaders(array $headers)
  * @method \Wilkques\Http\Client post(string $url, array $data, array $query = null)
- * @method \Wilkques\Http\Response throw(callable $callable = null)
+ * @method \Wilkques\Http\Client setCurlOption(string|int $curlOpt, $value)
  */
 class LINE
 {
@@ -32,7 +33,8 @@ class LINE
 
     /** @var array */
     const METHODS = [
-        'clientId', 'clientSecret'
+        'clientId',
+        'clientSecret'
     ];
 
     /** @var Client */
@@ -45,7 +47,7 @@ class LINE
      * @param string|null $clientId
      * @param string|null $clientSecret
      */
-    public function __construct(string $clientId = null, string $clientSecret = null)
+    public function __construct(?string $clientId = null, ?string $clientSecret = null)
     {
         $this->setClientId($clientId)->setClientSecret($clientSecret);
     }
@@ -55,9 +57,9 @@ class LINE
      * 
      * @return static
      */
-    public function setClientId(string $clientId = null)
+    public function setClientId(?string $clientId = null)
     {
-        data_set($this->auth, 'clientId', $clientId);
+        Arrays::set($this->auth, 'clientId', $clientId);
 
         return $this;
     }
@@ -67,7 +69,7 @@ class LINE
      */
     public function getClientId()
     {
-        return data_get($this->auth, 'clientId');
+        return Arrays::get($this->auth, 'clientId');
     }
 
     /**
@@ -75,9 +77,9 @@ class LINE
      * 
      * @return static
      */
-    public function setClientSecret(string $clientSecret = null)
+    public function setClientSecret(?string $clientSecret = null)
     {
-        data_set($this->auth, 'clientSecret', $clientSecret);
+        Arrays::set($this->auth, 'clientSecret', $clientSecret);
 
         return $this;
     }
@@ -87,7 +89,7 @@ class LINE
      */
     public function getClientSecret()
     {
-        return data_get($this->auth, 'clientSecret');
+        return Arrays::get($this->auth, 'clientSecret');
     }
 
     /**
@@ -209,7 +211,7 @@ class LINE
         $redirectUri = null,
         $scope = ['openid', 'profile'],
         string $state = 'default',
-        string $codeChallenge = null,
+        ?string $codeChallenge = null,
         array $options = []
     ) {
         $vars = get_defined_vars();
@@ -234,7 +236,7 @@ class LINE
      * 
      * @see [Issue-access-token](https://developers.line.biz/en/reference/line-login/#issue-access-token)
      */
-    public function token(string $code, string $redirectUri = null, string $codeVerifier = null)
+    public function token(string $code, ?string $redirectUri = null, ?string $codeVerifier = null)
     {
         $params = [
             'grant_type' => 'authorization_code',
@@ -391,9 +393,12 @@ class LINE
      */
     public function friendshipStatus(string $accessToken)
     {
-        return $this->withToken($accessToken)->get(UrlEnum::VERIFYTOKEN_URL)->throw(function (Response $response) {
-            return new FriendshipStatusException($response);
-        })->json()['friendFlag'];
+        return Arrays::get(
+            $this->withToken($accessToken)->get(UrlEnum::VERIFYTOKEN_URL)->throw(function (Response $response) {
+                return new FriendshipStatusException($response);
+            })->json(),
+            'friendFlag'
+        );
     }
 
     /**
@@ -403,7 +408,7 @@ class LINE
     {
         $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
 
-        $uri = data_get(parse_url($_SERVER['REQUEST_URI']), 'path');
+        $uri = Arrays::get(parse_url($_SERVER['REQUEST_URI']), 'path');
 
         return sprintf("%s://%s%s", $protocol, $_SERVER['HTTP_HOST'], $uri);
     }

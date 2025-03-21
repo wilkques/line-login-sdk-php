@@ -130,6 +130,16 @@ openid%20email	            |       -	    |       ✓	        |        -	        
         ]);
         ```
 
+## Client CURL Setting
+1. `setCurlOption` PHP CURL Setting
+    ```php
+    $line->setCurlOption(<CURL OPTION>, <Value>);
+
+    // e.g.
+
+    $line->setCurlOption(CURLOPT_TIMEOUT, 100);
+    ```
+
 ## REFERENCE
 
 1. [Official](https://developers.line.biz/en/reference/line-login/)

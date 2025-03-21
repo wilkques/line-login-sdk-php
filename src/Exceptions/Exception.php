@@ -2,6 +2,7 @@
 
 namespace Wilkques\LINE\Exceptions;
 
+use Wilkques\Helpers\Arrays;
 use Wilkques\Http\Response;
 
 class Exception extends \Exception
@@ -35,7 +36,11 @@ class Exception extends \Exception
         $message = "HTTP request returned status code {$response->status()}";
 
         if (is_array($data) && array_intersect(array_flip($data), ['error', 'error_description'])) {
-            $this->setError($data['error'])->setErrorDescription($data['error_description']);
+            $error = Arrays::get($data, 'error');
+
+            $errorDescription = Arrays::get($data, 'error_description');
+
+            $this->setError($error)->setErrorDescription($errorDescription);
 
             return $message . ":\n Error:{$this->getError()}\n Error Description: {$this->getErrorDescription()}\n";
         }
@@ -70,9 +75,9 @@ class Exception extends \Exception
      * 
      * @return static
      */
-    public function setError(string $error = null)
+    public function setError(?string $error = null)
     {
-        $this->errorResponse['error'] = $error;
+        Arrays::set($this->errorResponse, 'error', $error);
 
         return $this;
     }
@@ -82,7 +87,7 @@ class Exception extends \Exception
      */
     public function getError()
     {
-        return $this->errorResponse['error'];
+        return Arrays::get($this->errorResponse, 'error');
     }
 
     /**
@@ -90,9 +95,9 @@ class Exception extends \Exception
      * 
      * @return static
      */
-    public function setErrorDescription(string $errorDescription = null)
+    public function setErrorDescription(?string $errorDescription = null)
     {
-        $this->errorResponse['errorDescription'] = $errorDescription;
+        Arrays::set($this->errorResponse, 'errorDescription', $errorDescription);
 
         return $this;
     }
@@ -102,6 +107,6 @@ class Exception extends \Exception
      */
     public function getErrorDescription()
     {
-        return $this->errorResponse['errorDescription'];
+        return Arrays::get($this->errorResponse, 'errorDescription');
     }
 }

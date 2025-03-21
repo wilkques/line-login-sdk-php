@@ -2,6 +2,7 @@
 
 namespace Wilkques\LINE\DataObjects;
 
+use Wilkques\Helpers\Arrays;
 use Wilkques\Http\Response;
 use Wilkques\LINE\LINE;
 
@@ -19,7 +20,7 @@ abstract class DataObject implements \JsonSerializable, \ArrayAccess
     /**
      * @param Response|array $response
      */
-    public function __construct($response, LINE $line = null)
+    public function __construct($response, ?LINE $line = null)
     {
         is_array($response) && $this->setData($response);
 
@@ -74,7 +75,7 @@ abstract class DataObject implements \JsonSerializable, \ArrayAccess
      * 
      * @return static
      */
-    public function setData(array $data = null)
+    public function setData(?array $data = null)
     {
         $this->data = $data ?: $this->toArray();
 
@@ -128,7 +129,7 @@ abstract class DataObject implements \JsonSerializable, \ArrayAccess
      *
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
@@ -139,7 +140,7 @@ abstract class DataObject implements \JsonSerializable, \ArrayAccess
      * @param  mixed  $offset
      * @return mixed
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->__get($offset);
     }
@@ -151,7 +152,7 @@ abstract class DataObject implements \JsonSerializable, \ArrayAccess
      * @param  mixed  $value
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->__set($offset, $value);
     }
@@ -162,7 +163,7 @@ abstract class DataObject implements \JsonSerializable, \ArrayAccess
      * @param  mixed  $offset
      * @return bool
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return !array_key_exists($offset, $this->toArray()) && !is_null($this->__get($offset));
     }
@@ -173,7 +174,7 @@ abstract class DataObject implements \JsonSerializable, \ArrayAccess
      * @param  mixed  $offset
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->toArray()[$offset]);
     }
@@ -214,7 +215,7 @@ abstract class DataObject implements \JsonSerializable, \ArrayAccess
      */
     public function __set(string $key, $value)
     {
-        $this->data[$key] = $value;
+        Arrays::set($this->data, $key, $value);
     }
 
     /**

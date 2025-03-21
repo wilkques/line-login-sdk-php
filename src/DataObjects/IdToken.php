@@ -119,7 +119,7 @@ class IdToken extends DataObject
     /**
      * @return UserProfile
      */
-    public function userProfile(string $token = null)
+    public function userProfile(?string $token = null)
     {
         if ($token) {
             return $this->getLine()->userProfile($token);
