@@ -53,6 +53,8 @@ openid%20email	            |       -	    |       ✓	        |        -	        
         // Permissions requested from the user: https://developers.line.biz/en/docs/line-login/integrate-line-login/#scopes
         'scope'         => ['openid', 'openid']
     ]);
+
+    header('Location: '.$url);
     ````
 
 1. PKCE Authorization
@@ -104,6 +106,8 @@ openid%20email	            |       -	    |       ✓	        |        -	        
             'state'             => $codeVerifier, 
             'code_challenge'    => $codeChallenge,
         ]);
+
+        header('Location: '.$url);
         ```
 
 ## Client CURL Setting
