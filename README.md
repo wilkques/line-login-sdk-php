@@ -58,7 +58,7 @@ openid%20email	            |       -	    |       ✓	        |        -	        
     ````
 
 1. PKCE Authorization
-    1. command `composer require wilkques/pkce-php`
+    1. command `composer require wilkques/pkce-php` [wilkques/pkce-php](https://github.com/wilkques/pkce-php)
     1.  ```php
         use Wilkques\LINE\LINE;
         use Wilkques\PKCE\Generator;
