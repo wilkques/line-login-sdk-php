@@ -112,6 +112,7 @@ openid%20email	            |       -	    |       ✓	        |        -	        
 
 ## Client CURL Setting
 1. `setCurlOption` PHP CURL Setting
+
     ```php
     $line->setCurlOption(<CURL OPTION>, <Value>);
 
